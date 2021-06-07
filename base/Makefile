@@ -1,6 +1,6 @@
 
 obj-y :=
-obj-y += mt_asyncqueue.o
+obj-y += mt_async_queue.o
 obj-y += mt_event.o
 obj-y += mt_log.o
 obj-y += mt_msg.o
