@@ -30,7 +30,7 @@ const char *mt_log_enum2str(MMP_LOG_ENUM level)
 		case MLOG_FATAL: 	ret = "[F]";break;
 		default: break;
 	}
-   return ret;
+	return ret;
 }
 
 
@@ -39,14 +39,14 @@ const char *mt_log_colour_get(MMP_LOG_ENUM level)
     const char *ret = COLOUR_NONE;
     switch(level)
     {
-            case MLOG_VERBOSE: 	ret = COLOUR_NONE;break;
-            case MLOG_DEBUG: 	ret = COLOUR_WHITE;break;
-            case MLOG_INFO: 	ret = COLOUR_WHITE;break;
-            case MLOG_MESSAGE: 	ret = COLOUR_L_GREEN;break;
-            case MLOG_WARN: 	ret = COLOUR_YELLOW;break;
-            case MLOG_ERROR: 	ret = COLOUR_L_RED;break;
-            case MLOG_FATAL: 	ret = COLOUR_RED;break;
-            default: break;
+        case MLOG_VERBOSE: 	ret = COLOUR_NONE;break;
+        case MLOG_DEBUG: 	ret = COLOUR_WHITE;break;
+        case MLOG_INFO: 	ret = COLOUR_WHITE;break;
+        case MLOG_MESSAGE: 	ret = COLOUR_L_GREEN;break;
+        case MLOG_WARN: 	ret = COLOUR_YELLOW;break;
+        case MLOG_ERROR: 	ret = COLOUR_L_RED;break;
+        case MLOG_FATAL: 	ret = COLOUR_RED;break;
+        default: break;
     }
     return ret;
 }
