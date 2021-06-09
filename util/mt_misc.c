@@ -24,9 +24,14 @@ void time2str(char *buf,int size)
     snprintf(buf+pos,size-pos,".%lu",millisecond);
 }
 
-void thread_name_get(const char *task_name)
+void thread_name_get(char *task_name)
 {
 	prctl(PR_GET_NAME,task_name);
+}
+
+void thread_name_set(const char *task_name)
+{
+	prctl(PR_SET_NAME,task_name);
 }
 
 
