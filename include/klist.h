@@ -1017,8 +1017,8 @@ static inline void hlist_add_after_rcu(struct hlist_node *prev,
 static inline unsigned int list_length(const struct list_head *head)
 {
 	unsigned int length = 0;
-	struct list_head *node = NULL;
-	list_for_each(node,head)
+	struct list_head *node = NULL,*node_next = NULL;
+	list_for_each_safe(node,node_next,head)
 	{
 		length++;
 	}
