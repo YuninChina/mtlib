@@ -1,6 +1,6 @@
 #ifndef __MT_TASK_H
 #define __MT_TASK_H
-
+#include "mt_async_queue.h"
 #include "mt_msg.h"
 
 typedef void (*mt_task_init_t)(int order);
@@ -13,12 +13,11 @@ typedef enum {
 	MT_TASK_ORDER_BUTT
 }MT_TASK_ORDER_ENUM;
 
-typedef struct mt_task_context_s mt_task_context_t;
-
-mt_task_context_t *mt_task_create(int task_num,int *err_code);
-void mt_task_destroy(mt_task_context_t *c);
-int mt_task_register(mt_task_context_t *c,int task_id,const char *task_name,unsigned int stack_size,mt_task_init_t init,mt_task_run_t run);
-int mt_task_run(mt_task_context_t *c);
-
+int mtask_init(unsigned int task_num);
+void mtask_exit(void);
+int mtask_run(void);
+int mtask_reg(int task_id, const char * task_name, unsigned int stack_size, mt_task_init_t init, mt_task_run_t run);
+mt_async_queue_t *mtask_async_queue_get(unsigned int task_id);
+unsigned int mtask_async_queue_length(unsigned int task_id);
 
 #endif

@@ -9,7 +9,6 @@
 #include "mt_task.h"
 #include "mt_log.h"
 #include "mt_misc.h"
-#include "mt_async_queue.h"
 
 
 typedef enum {
@@ -37,6 +36,9 @@ struct mt_task_context_s {
 	mt_task_t *tasks;
 	unsigned int task_num;	
 };
+
+typedef struct mt_task_context_s mt_task_context_t;
+
 
 static void *__mt_task_routine(void *arg)
 {
@@ -97,6 +99,11 @@ unsigned int stack_size,mt_task_init_t init,mt_task_run_t run)
 	task->init = init;
 	task->run = run;
 	pthread_mutex_unlock(&c->mutex);
+	return 0;
+}
+
+int mt_task_unregister(mt_task_context_t *c,int task_id)
+{
 	return 0;
 }
 
@@ -183,5 +190,59 @@ void mt_task_destroy(mt_task_context_t *c)
 		free(c);
 		c = NULL;
 	}
+}
+
+mt_async_queue_t *mt_task_async_queue_get(mt_task_context_t *c,unsigned int task_id)
+{
+	mt_task_t *task = NULL;
+	RETURN_VAL_IF_FAIL(c && c->tasks && task_id < c->task_num, NULL);
+	task = &c->tasks[task_id];
+	return task->q;
+}
+
+unsigned int mt_task_async_queue_length(mt_task_context_t *c,unsigned int task_id)
+{
+	mt_task_t *task = NULL;
+	RETURN_VAL_IF_FAIL(c && c->tasks && task_id < c->task_num, 0);
+	task = &c->tasks[task_id];
+	return mt_async_queue_length(task->q);
+}
+
+/*****************************************************/
+static mt_task_context_t *g_task_context = NULL;
+int mtask_init(unsigned int task_num)
+{
+	int err_code = -1;
+	g_task_context = mt_task_create(task_num, &err_code);
+	RETURN_VAL_IF_FAIL(g_task_context, -1);
+	return 0;
+}
+
+void mtask_exit(void)
+{
+	mt_task_destroy(g_task_context);
+	g_task_context = NULL;
+}
+
+
+int mtask_run(void)
+{
+	return mt_task_run(g_task_context);
+}
+
+int mtask_reg(int task_id, const char * task_name, unsigned int stack_size, mt_task_init_t init, mt_task_run_t run)
+{
+	return mt_task_register(g_task_context, task_id,task_name,stack_size,init,run);
+}
+
+
+mt_async_queue_t *mtask_async_queue_get(unsigned int task_id)
+{
+	return mt_task_async_queue_get(g_task_context,task_id);
+}
+
+unsigned int mtask_async_queue_length(unsigned int task_id)
+{
+	return mt_task_async_queue_length(g_task_context,task_id);
 }
 
