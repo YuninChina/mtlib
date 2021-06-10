@@ -9,6 +9,7 @@
 #include "mt_async_queue.h"
 #include "mt_threadpool.h"
 #include "mt_log.h"
+#include "mt_misc.h"
 
 
 typedef struct {
@@ -30,6 +31,7 @@ static void *mt_threadpool_thread(void *threadpool)
 	mt_threadpool_t *pool = (mt_threadpool_t *)threadpool;
 	RETURN_VAL_IF_FAIL(pool, NULL);
 	mt_threadpool_task_t *task = NULL;
+	thread_name_set("threadpool");
 	while(1)
 	{
 		task = (mt_threadpool_task_t *)mt_async_queue_pop_head(pool->queue);
@@ -115,21 +117,6 @@ int mt_threadpool_add(mt_threadpool_t *pool, void (*routine)(void *),void *arg, 
 	mt_async_queue_push_tail(pool->queue, task);
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
