@@ -40,6 +40,7 @@ void mt_async_queue_free(mt_async_queue_t *q)
 {
 	if(q)
 	{
+		pthread_cond_broadcast(&(q->cond));
 		pthread_cond_destroy(&q->cond);
 		pthread_mutex_destroy(&q->mutex);
 		mt_queue_free(q->queue);
