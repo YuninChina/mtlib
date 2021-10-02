@@ -140,7 +140,7 @@ MAKEFILE_BUILD := script/Makefile.build
 MAKEFILE_TEST_BUILD := script/Makefile.test.build
 export MAKEFILE_BUILD MAKEFILE_TEST_BUILD
 
-dirs := util/ base/
+dirs := 3th/ util/ base/
 dirs := ${patsubst %/,%,$(filter %/, $(dirs))}
 PHONY += $(dirs)
 $(dirs): FORCE
@@ -186,6 +186,7 @@ clean:	FORCE
 distclean: clean
 	@echo ">>> distclean target"
 	@rm -fr bin/ libs/ 
+	${shell for i in `find 3th/ -name *.tar.*`;do rm -fr ` echo $i | sed 's/\(.*\).tar.\(.*\)/\1/g' `;done}
 
 help: 
 	@echo  'Cleaning targets:'

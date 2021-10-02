@@ -49,6 +49,8 @@ ENV_VAR_UNSET()
 {
 	# cross compile
 	unset CC
+	unset AR
+	unset RANLIB
 	unset CFLAGS
 	unset LDFLAGS
 	unset CROSS_COMPILE
@@ -63,9 +65,11 @@ ENV_VAR_UNSET()
 	unset INCPATH
 	unset BINPATH
 	unset DATAPATH
+	unset PREFIX
 	
 	#misc
 	unset PKG_CONFIG
+	unset PKG_CONFIG_PATH
 }
 
 e_blank='[        ][      ]*'
@@ -104,7 +108,7 @@ CMD()
 	echo "${COLOR_GREEN} CMD${1}: ${2}${COLOR_NORMAL}" >&2
 }
 
-# $1:
+# $1: string
 LOG()
 {
 	echo "${COLOR_CYAN} LOG: ${1}${COLOR_NORMAL}" >&2
@@ -123,3 +127,60 @@ DEBUG()
 }
 
 
+#$1: self script name
+dependencies_info()
+{
+	ERR [$FUNCNAME-$LINENO] "usage: $1 [language] [action] [arch] [soc] [dirname] [clibs]"
+	CMD [$FUNCNAME-$LINENO] "language options: [c/cpp]"
+	CMD [$FUNCNAME-$LINENO] "action options: [make/clean/install/uninstall]"
+	CMD [$FUNCNAME-$LINENO] "arch options: [arm/x86/mips]"
+	CMD [$FUNCNAME-$LINENO] "soc options: [goke/hi3518e/hi3518ev200/xilink]"
+	CMD [$FUNCNAME-$LINENO] "clibs options: [uclibc/glibc]"
+}
+
+
+#$1: language
+#$2: action
+#$3: arch
+#$4: soc
+#$5: clibs
+dependencies_assert()
+{
+	if [[ "$1" != "c" ]] \
+	&& [[ "$1" != "cpp" ]] ;then
+		 ERR [$FUNCNAME-$LINENO] "language: $1 unsupport..."
+		 exit 1
+	fi
+
+	if [ "$2" != "make" ] \
+	&& [ "$2" != "clean" ] \
+	&& [ "$2" != "install" ] \
+	&& [ "$2" != "uninstall" ] ;then
+		 ERR [$FUNCNAME-$LINENO] "action: $2 unsupport..."
+		 exit 1
+	fi	
+
+	if [ "$3" != "arm" ] \
+	&& [ "$3" != "x86" ] \
+	&& [ "$3" != "mips" ] ;then
+		 ERR [$FUNCNAME-$LINENO] "arch: $3 unsupport..."
+		 exit 1
+	fi	
+	
+	if [[ "$4" != "goke" ]] \
+	&& [[ "$4" != "hi3518e" ]] \
+	&& [[ "$4" != "hi3518ev200" ]] \
+	&& [[ "$4" != "ingenic_t31" ]] \
+	&& [[ "$4" != "x86" ]] \
+	&& [[ "$4" != "xilink" ]] ;then
+		ERR [$FUNCNAME-$LINENO] "soc: $4 unsupport..."
+		exit 1	 
+	fi
+	
+	if [ "$5" != "uclibc" ] \
+	&& [ "$5" != "glibc" ] ;then
+		 ERR [$FUNCNAME-$LINENO] "clibs: $5 unsupport..."
+		 exit 1
+	fi
+	
+}
