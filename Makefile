@@ -156,9 +156,9 @@ build_comm_dym_lib: FORCE
 
 build_comms_static_lib: FORCE
 	@$(call log-echo, "make build all common library over !!! ")
-	@$(call log-cmd, "Start building a shared library now...")
-	${LD} -r -o ${LIBCOMM_S_NAME}  ${LINK_PATH}  ${shell ls ${INSTALL_LIB}/*.a} ${PLATFORM_LIBS} 
-	@$(call log-cmd, "make common library SUCC...")
+	@$(call log-cmd, "Start building a static library now...")
+	${LD} -r -o ${LIBCOMM_S_NAME}  ${LINK_PATH} --whole-archive ${shell ls ${INSTALL_LIB}/*.a} ${PLATFORM_LIBS} --no-whole-archive
+	@$(call log-cmd, "make static library SUCC...")
 
 
 objs := init/main.o
