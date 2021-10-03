@@ -161,6 +161,9 @@ build_comms_static_lib: FORCE
 	@$(call log-cmd, "make static library SUCC...")
 
 
+build_3th: FORCE
+	@${shell for i in `find 3th/ -name *.tar.*`;do tar -xvf $$i -C `dirname $$i` ;done}
+
 objs := init/main.o
 
 all:  $(dirs) ${objs} build_comms_static_lib FORCE
@@ -186,7 +189,7 @@ clean:	FORCE
 distclean: clean
 	@echo ">>> distclean target"
 	@rm -fr bin/ libs/ 
-	${shell for i in `find 3th/ -name *.tar.*`;do rm -fr ` echo $i | sed 's/\(.*\).tar.\(.*\)/\1/g' `;done}
+	${shell for i in `find 3th/ -name *.tar.*`;do rm -fr ` echo $$i | sed 's/\(.*\).tar.\(.*\)/\1/g' `;done}
 
 help: 
 	@echo  'Cleaning targets:'
