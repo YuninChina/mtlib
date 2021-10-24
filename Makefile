@@ -102,9 +102,9 @@ CFLAGS =
 CFLAGS += -fPIC -rdynamic -pipe -O2 -Wall
 CFLAGS += -I include
 CFLAGS += -I include/base
-CFLAGS += -I include/paltform
-CFLAGS += -I include/paltform/os
-CFLAGS += -I include/paltform/hal
+CFLAGS += -I include/platform
+CFLAGS += -I include/platform/os
+CFLAGS += -I include/platform/hal
 
 ifeq ($(CONFIG_SOC),T31)
 	CFLAGS += -muclibc
