@@ -8,6 +8,7 @@
 #include "mt_queue.h"
 #include "mt_async_queue.h"
 #include "mt_log.h"
+#include "platform_os.h"
 
 
 struct mt_async_queue_s {
@@ -21,7 +22,7 @@ struct mt_async_queue_s {
 mt_async_queue_t *mt_async_queue_new(void)
 {
 	mt_async_queue_t *q = NULL;
-	q = malloc(sizeof(*q));
+	q = os_malloc(sizeof(*q));
 	RETURN_VAL_IF_FAIL(q, NULL);
 	memset(q,0,sizeof(*q));	
 	q->queue = mt_queue_new();

@@ -4,8 +4,10 @@
 #include "os_linux.h"
 
 
-#define __os_malloc malloc
-
+void *sys_malloc(unsigned int size)
+{
+	return malloc(size);
+}
 
 
 
